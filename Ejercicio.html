@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compra de productos</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+
+<h1>Lista de Productos</h1>
+
+<ul id="lista-productos">
+</ul>
+
+<h2>Carrito de Compras</h2>
+
+<form id="formulario-compra">
+    <label for="nombre-producto">Nombre del producto:</label>
+    <input type="text" id="nombre-producto" required>
+    
+    <label for="precio-producto">Precio del producto:</label>
+    <input type="number" id="precio-producto" required>
+    
+    <button type="button" id="agregar-producto">Agregar al carrito</button>
+</form>
+
+<script>
+    // URL de ejemplo para obtener datos de productos (utilizando JSONPlaceholder)
+    const apiUrl = 'https://jsonplaceholder.typicode.com/todos';
+
+    // Función para obtener y mostrar la lista de productos
+    function obtenerProductos() {
+        $.get(apiUrl, function(data) {
+            const productos = data.slice(0, 5); // Tomamos solo los primeros 5 elementos
+            mostrarProductos(productos);
+        });
+    }
+
+    // Función para mostrar la lista de productos en el HTML
+    function mostrarProductos(productos) {
+        const listaProductos = $('#lista-productos');
+        listaProductos.empty();
+
+        productos.forEach(producto => {
+            listaProductos.append(`<li>${producto.title} - ${producto.id}</li>`);
+        });
+    }
+
+    // Función para agregar un producto al carrito
+    function agregarAlCarrito() {
+        const nombreProducto = $('#nombre-producto').val();
+        const precioProducto = $('#precio-producto').val();
+
+        if (nombreProducto && precioProducto) {
+
+            alert(`Producto agregado al carrito: ${nombreProducto} - $${precioProducto}`);
+        } else {
+            alert('Por favor, ingresa el nombre y el precio del producto.');
+        }
+    }
+
+    // Asignar el evento de clic al botón de agregar producto   S
+    $('#agregar-producto').on('click', agregarAlCarrito);
+
+    // Al cargar la página, obtener la lista de productos
+    $(document).ready(function() {
+        obtenerProductos();
+    });
+</script>
+
+</body>
+</html>
